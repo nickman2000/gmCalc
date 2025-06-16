@@ -1,0 +1,197 @@
+<div class="container">
+  <div class="header">
+    <h1>Calculator App</h1>
+    <p>Select a calculation type below</p>
+  </div>
+  
+  <div class="content">
+    <div class="main-buttons">
+      <button 
+        class="main-btn" 
+        [ngClass]="{'active': isSectionActive('floor')}"
+        (click)="showSection('floor')">
+        იატაკი
+      </button>
+      <button 
+        class="main-btn" 
+        [ngClass]="{'active': isSectionActive('wall')}"
+        (click)="showSection('wall')">
+        კედელი
+      </button>
+      <button 
+        class="main-btn" 
+        [ngClass]="{'active': isSectionActive('roof')}"
+        (click)="showSection('roof')">
+        სახურავი
+      </button>
+      <button 
+        class="main-btn" 
+        [ngClass]="{'active': isSectionActive('heating')}"
+        (click)="showSection('heating')">
+        თბო&პანელი
+      </button>
+    </div>
+    
+    <!-- Floor Section -->
+    <div *ngIf="isSectionActive('floor')" class="calculator-section">
+      <h3>იატაკი Calculator</h3>
+      <div class="input-group">
+        <label for="floor-length">სიგრძე:</label>
+        <input 
+          type="number" 
+          id="floor-length" 
+          [(ngModel)]="floorLength"
+          step="0.01" 
+          placeholder="Enter length">
+      </div>
+      <div class="button-group">
+        <button class="btn btn-primary" (click)="calculateFloor()">Calculate</button>
+      </div>
+      <div *ngIf="showFloorResult" class="output">
+        Result: {{ floorResult }}
+      </div>
+    </div>
+    
+    <!-- Wall Section -->
+    <div *ngIf="isSectionActive('wall')" class="calculator-section">
+      <h3>კედელი Calculator</h3>
+      <div class="input-group">
+        <label for="wall-height">სიმაღლე:</label>
+        <input 
+          type="number" 
+          id="wall-height" 
+          [(ngModel)]="wallHeight"
+          step="0.01" 
+          placeholder="Enter height">
+      </div>
+      <div class="input-group">
+        <label for="wall-perimeter">პერიმეტრი:</label>
+        <input 
+          type="number" 
+          id="wall-perimeter" 
+          [(ngModel)]="wallPerimeter"
+          step="0.01" 
+          placeholder="Enter perimeter">
+      </div>
+      <div class="button-group">
+        <button class="btn btn-primary" (click)="calculateWall()">Calculate</button>
+      </div>
+      <div *ngIf="showWallResult" class="output">
+        Result: {{ wallResult }}
+      </div>
+    </div>
+    
+    <!-- Roof Section -->
+    <div *ngIf="isSectionActive('roof')" class="calculator-section">
+      <h3>სახურავი Calculator</h3>
+      <div class="button-group">
+        <button class="btn btn-secondary" (click)="addRoofInput()">+ Add Input Pair</button>
+        <button class="btn btn-primary" (click)="calculateRoof()">Calculate</button>
+      </div>
+      <div class="dynamic-inputs">
+        <div *ngFor="let input of roofInputs" class="input-pair">
+          <div class="input-group">
+            <label>სიგრძე:</label>
+            <input 
+              type="number" 
+              [(ngModel)]="input.length"
+              step="0.01" 
+              placeholder="Length">
+          </div>
+          <div class="input-group">
+            <label>სიგანე:</label>
+            <input 
+              type="number" 
+              [(ngModel)]="input.width"
+              step="0.01" 
+              placeholder="Width">
+          </div>
+          <button 
+            class="btn btn-danger" 
+            (click)="removeRoofInput(input.id)"
+            [disabled]="roofInputs.length <= 1">
+            -
+          </button>
+        </div>
+      </div>
+      <div *ngIf="showRoofResult" class="output">
+        Total Result: {{ roofResult }}
+      </div>
+    </div>
+    
+    <!-- Heating Section -->
+    <div *ngIf="isSectionActive('heating')" class="calculator-section">
+      <h3>თბო&პანელი Calculator</h3>
+      <div class="input-group">
+        <label for="floor-length-h">იატაკსიგრძ:</label>
+        <input 
+          type="number" 
+          id="floor-length-h" 
+          [(ngModel)]="floorLenght"
+          step="0.01" 
+          placeholder="Floor Length">
+      </div>
+      <div class="input-group">
+        <label for="floor-width-h">იატაკსიგან:</label>
+        <input 
+          type="number" 
+          id="floor-width-h" 
+          [(ngModel)]="floorWidth"
+          step="0.01" 
+          placeholder="Floor Width">
+      </div>
+      <div class="input-group">
+        <label for="wall-length-h">კელდებისსიგრძ:</label>
+        <input 
+          type="number" 
+          id="wall-length-h" 
+          [(ngModel)]="wallLength"
+          step="0.01" 
+          placeholder="Wall Length">
+      </div>
+      <div class="input-group">
+        <label for="wall-width-h">კელდებისსიგან:</label>
+        <input 
+          type="number" 
+          id="wall-width-h" 
+          [(ngModel)]="wallWidth"
+          step="0.01" 
+          placeholder="Wall Width">
+      </div>
+      <div class="input-group">
+        <label for="roof-length-h">სახურავსიგრძ:</label>
+        <input 
+          type="number" 
+          id="roof-length-h" 
+          [(ngModel)]="roofLength"
+          step="0.01" 
+          placeholder="Roof Length">
+      </div>
+      <div class="input-group">
+        <label for="roof-width-h">სახურავსიგან:</label>
+        <input 
+          type="number" 
+          id="roof-width-h" 
+          [(ngModel)]="roofWidth"
+          step="0.01" 
+          placeholder="Roof Width">
+      </div>
+      <div class="input-group">
+        <label for="hot-count">თბორაოდენობა:</label>
+        <input 
+          type="number" 
+          id="hot-count" 
+          [(ngModel)]="hotCount"
+          step="0.01" 
+          placeholder="Hot Count">
+      </div>
+      <div class="button-group">
+        <button class="btn btn-primary" (click)="calculateHeating()">Calculate</button>
+      </div>
+      <div *ngIf="showHeatingResult" class="two-outputs">
+        <div class="output-item">თბო არის {{ heatingResult1 }}</div>
+        <div class="output-item">პანელი არის {{ heatingResult2 }}</div>
+      </div>
+    </div>
+  </div>
+</div>
