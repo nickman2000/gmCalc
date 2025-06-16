@@ -4,8 +4,8 @@ import { CommonModule } from '@angular/common'; // Usually needed for *ngIf, *ng
 
 interface RoofInput {
   id: number;
-  length: number;
-  width: number;
+  length: number | null;
+  width: number | null;
 }
 
 @Component({
@@ -18,18 +18,19 @@ interface RoofInput {
 export class HomeComponent {
   // Primary number as specified
   primaryNumb: number = 0.0075;
+  roofNumb: number = 0.0098;
   
   // Active section tracking
   activeSection: string = '';
   
   // Floor section variables
-  floorLength: number = 0;
+  floorLength: number | null = null;
   floorResult: number = 0;
   showFloorResult: boolean = false;
   
   // Wall section variables
-  wallHeight: number = 0;
-  wallPerimeter: number = 0;
+  wallHeight: number | null = null;
+  wallPerimeter: number | null = null;
   wallResult: number = 0;
   showWallResult: boolean = false;
   
@@ -40,13 +41,13 @@ export class HomeComponent {
   showRoofResult: boolean = false;
   
   // Heating section variables
-  floorLenght: number = 0;  // Note: keeping the typo as per your specification
-  floorWidth: number = 0;
-  wallLength: number = 0;
-  wallWidth: number = 0;
-  roofLength: number = 0;
-  roofWidth: number = 0;
-  hotCount: number = 0;
+  floorLenght: number | null = null;  // Note: keeping the typo as per your specification
+  floorWidth: number | null = null;
+  wallLength: number | null = null;
+  wallWidth: number | null = null;
+  roofLength: number | null = null;
+  roofWidth: number | null = null;
+  hotCount: number | null = null;
   heatingResult1: number = 0;
   heatingResult2: number = 0;
   showHeatingResult: boolean = false;
@@ -104,8 +105,8 @@ export class HomeComponent {
     this.roofInputCounter++;
     this.roofInputs.push({
       id: this.roofInputCounter,
-      length: 0,
-      width: 0
+      length: null,
+      width: null
     });
   }
 
@@ -125,8 +126,8 @@ export class HomeComponent {
     let hasValidInput = false;
     
     for (const input of this.roofInputs) {
-      if (input.length > 0 && input.width > 0) {
-        const result = (input.width / 0.6) * this.primaryNumb * input.length;
+      if (input.length && input.length > 0 && input.width && input.width > 0) {
+        const result = (input.width / 0.6) * this.roofNumb * input.length;
         totalSum += result;
         hasValidInput = true;
       }
@@ -154,11 +155,11 @@ export class HomeComponent {
     }
     
     // First formula: floorLength * floorWidth + wallLength * wallWidth + roofLength * roofWidth * hotCount
-    const result1 = (this.floorLenght * this.floorWidth + this.wallLength * this.wallWidth + this.roofLength * this.roofWidth) * this.hotCount;
+    const result1 = (this.floorLenght! * this.floorWidth! + this.wallLength! * this.wallWidth! + this.roofLength! * this.roofWidth!) * this.hotCount!;
     this.heatingResult1 = this.customRound(result1);
     
     // Second formula: wallLength * wallWidth * 2 + roofWidth * roofLength
-    const result2 = this.wallLength * this.wallWidth * 2 + this.roofWidth * this.roofLength;
+    const result2 = this.wallLength! * this.wallWidth! * 2 + this.roofWidth! * this.roofLength!;
     this.heatingResult2 = this.customRound(result2);
     
     this.showHeatingResult = true;
